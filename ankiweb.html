@@ -1,0 +1,18 @@
+If the typed in answer matches the saved answer this add-on rates the answer automatically as hard, good, or easy depending on how long it took you to answer. 
+
+The thresholds can be configured from the add-on manager: You have "easy if shorter than", "good if shorter than", "hard if shorter than". If it takes longer than what you set under "hard if shorter than" the card will be rated as "1/Again". There also some additional options like "hard interval for cards with 2 or 3 buttons means again",  "ignore case when comparing", "on mistake set focus on again", and "show tooltip for confirmation".
+    
+If the typed in answer doesn't match you will see the answer and have to grade for yourself because I don't like automatically grading wrong answers: What if you only have a typo? What if you learn English and type "they're" whereas in the card you have "they are" etc. Should this always be graded as "fail/again"? Also you probably want to read the correct answer to learn it.
+
+You can check if this add-on works as expected with add-ons like <a href="https://ankiweb.net/shared/info/1008566916" rel="nofollow">Extended Card Stats During Review</a> or <a href="https://ankiweb.net/shared/info/673114053" rel="nofollow">deck and card info sidebar during review</a> that show you in a reviewer sidebar how you rated the last card.
+
+<b># Alternatives</b>
+As far as I see for the current version 2.1 in 2019-09-03 there's only <a href="https://ankiweb.net/shared/info/1046608507" rel="nofollow">Speed Focus Mode (auto-alert, auto-reveal, auto-fail)</a> which only rates as again if you took too long.
+
+For the old version 2.0 there are several similar add-ons that change the default ease so that depending on your answer the space bar means "again" or "good", the latest should be kelciour's <a href="https://gist.github.com/kelciour/2e4cba32edb2155c044bf34ea96d4ba7" rel="nofollow">_Select_Answer_Buttons_Automatically.py</a>. This function is also included in my add-on as an option that you need to enable in the config.
+
+<b># bugs etc.</b>
+If you find a bug or have improvements please post them on <a href="https://github.com/ijgnd/anki__auto_rate_typedin_answer" rel="nofollow">github</a> or tell me on reddit (u/ijgnord). As always: Use this add-on at your own risk.
+
+<b># Limitations</b>
+The comparison between the typed in answer and the answer that's store in the card might sometimes fail. I think I use what Anki 2.1.15 uses. But html is complicated so there might be cases where this add-on doesn't auto-rate but shows you the answer even if you typed in the correct answer. 

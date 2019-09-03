@@ -1,0 +1,11 @@
+{
+    "easy if shorter than":2,
+    "good if shorter than":5.5,
+    "hard if shorter than":12,
+    "hard interval for cards with 2 or 3 buttons means again":false,
+    "ignore case when comparing":false,
+    "on mistake set focus on again":false,
+    "show tooltip for confirmation":true
+}
+
+
