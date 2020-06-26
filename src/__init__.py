@@ -4,7 +4,7 @@
 #            Ankitects Pty Ltd and contributors
 
 
-import html.parser
+import html
 import re
 
 from anki.hooks import addHook, wrap
@@ -51,13 +51,12 @@ def getUserSettingsAndMaybeWarn():
 def getOriginal(self):
     # code is reused from typeAnsAnswerFilter,
     # https://github.com/dae/anki/blob/master/aqt/reviewer.py#L349
-    parser = html.parser.HTMLParser()
     cor = self.mw.col.media.strip(self.typeCorrect)
     cor = re.sub("(\n|<br ?/?>|</?div>)+", " ", cor)
     cor = stripHTML(cor)
     # ensure we don't chomp multiple whitespace
     cor = cor.replace(" ", "&nbsp;")
-    cor = parser.unescape(cor)
+    cor = html.unescape(cor)
     cor = cor.replace("\xa0", " ")
     cor = cor.strip()
     return cor
