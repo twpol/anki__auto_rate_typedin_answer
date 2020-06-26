@@ -48,7 +48,7 @@ def getUserSettingsAndMaybeWarn():
     return hardThres, goodThres, easyThres
 
 
-def answer_from_field(self, field):
+def answer_from_field(self, fieldcontent):
     # code is reused from typeAnsAnswerFilter,
     # https://github.com/dae/anki/blob/master/aqt/reviewer.py#L349
     # self.typeCorrect is set in typeAnsQuestionFilter
@@ -59,7 +59,7 @@ def answer_from_field(self, field):
     #           if clozeIdx:
     #               # narrow to cloze
     #               self.typeCorrect = self._contentForCloze(self.typeCorrect, clozeIdx)
-    cor = self.mw.col.media.strip(field)
+    cor = self.mw.col.media.strip(fieldcontent)
     cor = re.sub("(\n|<br ?/?>|</?div>)+", " ", cor)
     cor = stripHTML(cor)
     # ensure we don't chomp multiple whitespace
@@ -73,24 +73,32 @@ def answer_from_field(self, field):
 def does_it_match(self, given):
     if gc("ignore case when comparing"):
         given = given.lower()
-    answers = [self.typeCorrect, ]
+    additional_fields_with_answers = []
     multi_answers_dict = gc("accept_multiple_answers_for_these_notetypes")
+    model = self.card.model()
     if multi_answers_dict:
-        model = self.card.model()
         this_template_name = model["tmpls"][self.card.ord]["name"]
         addon_settings_for_this_note_type = multi_answers_dict.get(model["name"])
         if addon_settings_for_this_note_type:
             if isinstance(addon_settings_for_this_note_type, list):
-                answers.extend(addon_settings_for_this_note_type)
+                additional_fields_with_answers.extend(addon_settings_for_this_note_type)
             elif isinstance(addon_settings_for_this_note_type, dict):
                 # iterate over card templates
                 # key = card_type_name, val = answer_fields
                 for k, v in addon_settings_for_this_note_type.items():
                     if k == this_template_name:
-                        answers.extend(v)
-    for a in answers:
-        if given == answer_from_field(self, a):
-            return True
+                        additional_fields_with_answers.extend(v)
+    # compare default field
+    # self.typeCorrect contains the contents of a field
+    if given == answer_from_field(self, self.typeCorrect):
+        return True
+    # compare additional fields
+    for field in model["flds"]:
+        for a in additional_fields_with_answers:
+            if a == field['name']:
+                transformed = answer_from_field(self, self.card.note()[field['name']])
+                if given == transformed:
+                    return True
     return False
 
 
