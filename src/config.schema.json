@@ -3,6 +3,13 @@
     "type": "object",
     "title": "auto rate typed answer",
     "properties": {
+        "accept_multiple_answers_for_these_notetypes": {
+            "type": "object",
+            "description": "",
+            "additionalProperties": {
+                "type": "array"
+            }
+        },
         "easy if shorter than": {
             "type": "number",
             "default": "2",

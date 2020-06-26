@@ -48,10 +48,18 @@ def getUserSettingsAndMaybeWarn():
     return hardThres, goodThres, easyThres
 
 
-def getOriginal(self):
+def answer_from_field(self, field):
     # code is reused from typeAnsAnswerFilter,
     # https://github.com/dae/anki/blob/master/aqt/reviewer.py#L349
-    cor = self.mw.col.media.strip(self.typeCorrect)
+    # self.typeCorrect is set in typeAnsQuestionFilter
+    #   # loop through fields for a match
+    #   for f in self.card.model()["flds"]:
+    #       if f["name"] == fld:
+    #           self.typeCorrect = self.card.note()[f["name"]]
+    #           if clozeIdx:
+    #               # narrow to cloze
+    #               self.typeCorrect = self._contentForCloze(self.typeCorrect, clozeIdx)
+    cor = self.mw.col.media.strip(field)
     cor = re.sub("(\n|<br ?/?>|</?div>)+", " ", cor)
     cor = stripHTML(cor)
     # ensure we don't chomp multiple whitespace
@@ -60,6 +68,21 @@ def getOriginal(self):
     cor = cor.replace("\xa0", " ")
     cor = cor.strip()
     return cor
+
+
+def does_it_match(self, given):
+    if gc("ignore case when comparing"):
+        given = given.lower()
+    answers = [self.typeCorrect, ]
+    multi_answers_dict = gc("accept_multiple_answers_for_these_notetypes")
+    if multi_answers_dict:
+        name = self.card.model()["name"]
+        if name in multi_answers_dict:
+            answers.extend(multi_answers_dict.get(name))
+    for a in answers:
+        if given == answer_from_field(self, a):
+            return True
+    return False
 
 
 def my_defaultEase(self, _old):
@@ -72,13 +95,7 @@ Reviewer._defaultEase = wrap(Reviewer._defaultEase, my_defaultEase, "around")
 
 def myAutoAnswerCorrect(self):
     if self.typedAnswer:
-        correctAns = getOriginal(self)
-        given = self.typedAnswer
-        if gc("ignore case when comparing", False):
-            cond = True if given.lower() == correctAns.lower() else False
-        else:
-            cond = True if given == correctAns else False
-        if cond:
+        if does_it_match(self, self.typedAnswer):
             dur = self.card.timeTaken()
             hardThres, goodThres, easyThres = getUserSettingsAndMaybeWarn()
             cnt = self.mw.col.sched.answerButtons(mw.reviewer.card)  # Get button count

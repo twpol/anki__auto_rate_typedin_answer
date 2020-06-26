@@ -1,4 +1,6 @@
 {
+    "accept_multiple_answers_for_these_notetypes" : {
+    },
     "easy if shorter than": 2,
     "good if shorter than": 5.5,
     "hard if shorter than": 12,
