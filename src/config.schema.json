@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "auto rate typed answer",
+    "properties": {
+        "easy if shorter than": {
+            "type": "number",
+            "default": "2",
+            "description": ""
+        },
+        "good if shorter than": {
+            "type": "number",
+            "default": 5.5,
+            "description": ""
+        },
+        "hard if shorter than": {
+            "type": "number",
+            "default": 12,
+            "description": ""
+        },
+        "hard interval for cards with 2 or 3 buttons means again": {
+            "type": "boolean",
+            "default": false,
+            "description": ""
+        },
+        "ignore case when comparing": {
+            "type": "boolean",
+            "default": false,
+            "description": ""
+        },
+        "on mistake set focus on again": {
+            "type": "boolean",
+            "default": false,
+            "description": ""
+        },
+        "show tooltip for confirmation": {
+            "type": "boolean",
+            "default": true,
+            "description": ""
+        }
+    }
+}
