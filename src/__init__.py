@@ -76,9 +76,18 @@ def does_it_match(self, given):
     answers = [self.typeCorrect, ]
     multi_answers_dict = gc("accept_multiple_answers_for_these_notetypes")
     if multi_answers_dict:
-        name = self.card.model()["name"]
-        if name in multi_answers_dict:
-            answers.extend(multi_answers_dict.get(name))
+        model = self.card.model()
+        this_template_name = model["tmpls"][self.card.ord]["name"]
+        addon_settings_for_this_note_type = multi_answers_dict.get(model["name"])
+        if addon_settings_for_this_note_type:
+            if isinstance(addon_settings_for_this_note_type, list):
+                answers.extend(addon_settings_for_this_note_type)
+            elif isinstance(addon_settings_for_this_note_type, dict):
+                # iterate over card templates
+                # key = card_type_name, val = answer_fields
+                for k, v in addon_settings_for_this_note_type.items():
+                    if k == this_template_name:
+                        answers.extend(v)
     for a in answers:
         if given == answer_from_field(self, a):
             return True
