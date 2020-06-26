@@ -1,6 +1,6 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 # anki add-on  auto rate typed answer
-# Copyright: ijgnd 2019
+# Copyright: ijgnd 2019-
 #            Ankitects Pty Ltd and contributors
 
 
