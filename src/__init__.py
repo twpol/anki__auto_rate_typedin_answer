@@ -71,8 +71,6 @@ def answer_from_field(self, fieldcontent):
 
 
 def does_it_match(self, given):
-    if gc("ignore case when comparing"):
-        given = given.lower()
     additional_fields_with_answers = []
     multi_answers_dict = gc("accept_multiple_answers_for_these_notetypes")
     model = self.card.model()
@@ -92,6 +90,9 @@ def does_it_match(self, given):
     # self.typeCorrect contains the contents of a field
     if given == answer_from_field(self, self.typeCorrect):
         return True
+    elif gc("ignore case when comparing"):
+        if given.lower() == answer_from_field(self, self.typeCorrect).lower():
+            return True
     # compare additional fields
     for field in model["flds"]:
         for a in additional_fields_with_answers:
@@ -99,6 +100,9 @@ def does_it_match(self, given):
                 transformed = answer_from_field(self, self.card.note()[field['name']])
                 if given == transformed:
                     return True
+                elif gc("ignore case when comparing"):
+                    if given.lower() == transformed.lower():
+                        return True
     return False
 
 
