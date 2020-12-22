@@ -121,10 +121,17 @@ def myAutoAnswerCorrect(self):
             hardThres, goodThres, easyThres = getUserSettingsAndMaybeWarn()
             cnt = self.mw.col.sched.answerButtons(mw.reviewer.card)  # Get button count
             def helper(ease):
-                self._answerCard(ease)
-                if gc("show tooltip for confirmation", True):
-                    msg = """Last Card rated with "%i" in %.2f seconds.""" % (ease, dur/1000)
-                    tooltip(msg)
+                wait = gc("wait before rating answer", 0)
+                if wait > 0:
+                    self.mw.progress.timer(wait*1000, lambda: self._answerCard(ease), False)
+                    if gc("show tooltip for confirmation", True):
+                        msg = """Card will be rated with "%i" in %.2f seconds.""" % (ease, dur/1000)
+                        tooltip(msg)
+                else:
+                    self._answerCard(ease)
+                    if gc("show tooltip for confirmation", True):
+                        msg = """Last Card rated with "%i" in %.2f seconds.""" % (ease, dur/1000)
+                        tooltip(msg)
             if dur < easyThres:
                 if cnt == 2:
                     helper(2)
